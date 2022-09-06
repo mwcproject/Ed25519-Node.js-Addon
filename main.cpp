@@ -46,7 +46,7 @@ NAPI_MODULE_INIT() {
 		return nullptr;
 	}
 
-	// Check if create public key from secret key property failed
+	// Check if creating public key from secret key property failed
 	napi_value temp;
 	if(napi_create_function(env, nullptr, 0, publicKeyFromSecretKey, nullptr, &temp) != napi_ok || napi_set_named_property(env, exports, "publicKeyFromSecretKey", temp) != napi_ok) {
 	
@@ -54,14 +54,14 @@ NAPI_MODULE_INIT() {
 		return nullptr;
 	}
 	
-	// Check if create sign property failed
+	// Check if creating sign property failed
 	if(napi_create_function(env, nullptr, 0, sign, nullptr, &temp) != napi_ok || napi_set_named_property(env, exports, "sign", temp) != napi_ok) {
 	
 		// Return nothing
 		return nullptr;
 	}
 	
-	// Check if create verify property failed
+	// Check if creating verify property failed
 	if(napi_create_function(env, nullptr, 0, verify, nullptr, &temp) != napi_ok || napi_set_named_property(env, exports, "verify", temp) != napi_ok) {
 	
 		// Return nothing
