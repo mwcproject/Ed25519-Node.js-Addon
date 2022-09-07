@@ -1,8 +1,8 @@
 {
 	"name": "@nicolasflamel/ed25519-native",
-	"version": "0.0.6",
+	"version": "0.0.8",
 	"description": "Node.js addon for parts of SUPERCOP's Ed25519 implementation",
-	"main": "./build/Release/Ed25519.node",
+	"main": "./main.js",
 	"gypfile": true,
 	"scripts": {
 		"preinstall": "wget \"https://bench.cr.yp.to/supercop/supercop-20220213.tar.xz\" && unxz < \"./supercop-20220213.tar.xz\" | tar -xf - && sed -i 's/static const unsigned char zero\\[32\\];/static const unsigned char zero[32] = {0};/g' \"./supercop-20220213/crypto_sign/ed25519/ref10/fe_isnonzero.c\" && wget -O \"./ed25519-wrapper.zip\" \"https://github.com/NicolasFlamel1/Ed25519-WASM-Wrapper/archive/refs/heads/master.zip\" && unzip \"./ed25519-wrapper.zip\"",
@@ -19,5 +19,8 @@
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/NicolasFlamel1/Ed25519-Node.js-Addon/issues"
+	},
+	"dependencies": {
+		"bindings": "^1.5.0"
 	}
 }
