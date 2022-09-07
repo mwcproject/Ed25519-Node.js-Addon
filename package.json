@@ -1,6 +1,6 @@
 {
 	"name": "@nicolasflamel/ed25519-native",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Node.js addon for parts of SUPERCOP's Ed25519 implementation",
 	"main": "./build/Release/Ed25519.node",
 	"gypfile": true,

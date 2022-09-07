@@ -30,8 +30,8 @@ static pair<const uint8_t *, size_t> uint8ArrayToBuffer(napi_env environment, na
 // Buffer to uint8 array
 static napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size);
 
-// Boolean to bool
-static napi_value booleanToBool(napi_env environment, bool value);
+// C bool to bool
+static napi_value cBoolToBool(napi_env environment, bool value);
 
 
 // Main function
@@ -85,7 +85,7 @@ NAPI_MODULE_INIT() {
 // Public key from secret key
 napi_value publicKeyFromSecretKey(napi_env environment, napi_callback_info arguments) {
 
-	// Check if no arguments were provided
+	// Check if not enough arguments were provided
 	size_t argc = 1;
 	napi_value argv[argc];
 	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
@@ -117,7 +117,7 @@ napi_value publicKeyFromSecretKey(napi_env environment, napi_callback_info argum
 // Sign
 napi_value sign(napi_env environment, napi_callback_info arguments) {
 
-	// Check if no arguments were provided
+	// Check if not enough arguments were provided
 	size_t argc = 2;
 	napi_value argv[argc];
 	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
@@ -157,48 +157,48 @@ napi_value sign(napi_env environment, napi_callback_info arguments) {
 // Verify
 napi_value verify(napi_env environment, napi_callback_info arguments) {
 
-	// Check if no arguments were provided
+	// Check if not enough arguments were provided
 	size_t argc = 3;
 	napi_value argv[argc];
 	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
 	
-		// Return operation failed
-		return OPERATION_FAILED;
+		// Return false as a bool
+		return cBoolToBool(environment, false);
 	}
 	
 	// Check if getting message from arguments failed
 	const pair<const uint8_t *, size_t> message = uint8ArrayToBuffer(environment, argv[0]);
 	if(!message.first) {
 	
-		// Return operation failed
-		return OPERATION_FAILED;
+		// Return false as a bool
+		return cBoolToBool(environment, false);
 	}
 	
 	// Check if getting signature from arguments failed
 	const pair<const uint8_t *, size_t> signature = uint8ArrayToBuffer(environment, argv[1]);
 	if(!signature.first) {
 	
-		// Return operation failed
-		return OPERATION_FAILED;
+		// Return false as a bool
+		return cBoolToBool(environment, false);
 	}
 	
 	// Check if getting public key from arguments failed
 	const pair<const uint8_t *, size_t> publicKey = uint8ArrayToBuffer(environment, argv[2]);
 	if(!publicKey.first) {
 	
-		// Return operation failed
-		return OPERATION_FAILED;
+		// Return false as a bool
+		return cBoolToBool(environment, false);
 	}
 	
 	// Check if signature failed to verify
 	if(!verify(message.first, message.second, signature.first, signature.second, publicKey.first, publicKey.second)) {
 	
 		// Return false as a bool
-		return booleanToBool(environment, false);
+		return cBoolToBool(environment, false);
 	}
 	
 	// Return true as a bool
-	return booleanToBool(environment, true);
+	return cBoolToBool(environment, true);
 }
 
 // Uint8 array to buffer
@@ -233,6 +233,9 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	uint8_t *buffer = new(nothrow) uint8_t[size];
 	if(!buffer) {
 	
+		// Clear data
+		explicit_bzero(data, size);
+	
 		// Return operation failed
 		return OPERATION_FAILED;
 	}
@@ -240,6 +243,12 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	// Check if allocating memory for size hint failed
 	size_t *sizeHint = new(nothrow) size_t(size);
 	if(!sizeHint) {
+	
+		// Clear data
+		explicit_bzero(data, size);
+	
+		// Free memory
+		delete [] buffer;
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -266,8 +275,16 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 		
 		// Free memory
 		delete [] buffer;
+		delete sizeHint;
 	
 	}, sizeHint, &arrayBuffer) != napi_ok) {
+	
+		// Clear buffer
+		explicit_bzero(buffer, size);
+	
+		// Free memory
+		delete [] buffer;
+		delete sizeHint;
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -277,6 +294,13 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	napi_value uint8Array;
 	if(napi_create_typedarray(environment, napi_uint8_array, size, arrayBuffer, 0, &uint8Array) != napi_ok) {
 	
+		// Clear buffer
+		explicit_bzero(buffer, size);
+	
+		// Free memory
+		delete [] buffer;
+		delete sizeHint;
+	
 		// Return operation failed
 		return OPERATION_FAILED;
 	}
@@ -285,8 +309,8 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	return uint8Array;
 }
 
-// Boolean to bool
-napi_value booleanToBool(napi_env environment, bool value) {
+// C bool to bool
+napi_value cBoolToBool(napi_env environment, bool value) {
 
 	// Check if creating boolean from value failed
 	napi_value result;
