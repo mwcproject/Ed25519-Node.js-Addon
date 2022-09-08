@@ -1,1 +1,1 @@
-module["exports"] = require("bindings")("Ed25519.node");
+module["exports"] = require("./build/Release/Ed25519.node");
