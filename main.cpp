@@ -1,8 +1,15 @@
 // Header files
+#include <cstring>
 #include <new>
 #include <node_api.h>
 #include <tuple>
-#include "./Ed25519-WASM-Wrapper-master/main.cpp"
+
+// Ed25519 namespace
+namespace Ed25519 {
+
+	// Header files
+	#include "./Ed25519-WASM-Wrapper-master/main.cpp"
+}
 
 using namespace std;
 
@@ -103,8 +110,8 @@ napi_value publicKeyFromSecretKey(napi_env environment, napi_callback_info argum
 	}
 	
 	// Check if getting public key from secret key failed
-	uint8_t publicKey[publicKeySize()];
-	if(!publicKeyFromSecretKey(publicKey, get<0>(secretKey), get<1>(secretKey))) {
+	uint8_t publicKey[Ed25519::publicKeySize()];
+	if(!Ed25519::publicKeyFromSecretKey(publicKey, get<0>(secretKey), get<1>(secretKey))) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -143,8 +150,8 @@ napi_value sign(napi_env environment, napi_callback_info arguments) {
 	}
 	
 	// Check if signing message failed
-	uint8_t signature[signatureSize()];
-	if(!sign(signature, get<0>(message), get<1>(message), get<0>(secretKey), get<1>(secretKey))) {
+	uint8_t signature[Ed25519::signatureSize()];
+	if(!Ed25519::sign(signature, get<0>(message), get<1>(message), get<0>(secretKey), get<1>(secretKey))) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -191,7 +198,7 @@ napi_value verify(napi_env environment, napi_callback_info arguments) {
 	}
 	
 	// Check if signature failed to verify
-	if(!verify(get<0>(message), get<1>(message), get<0>(signature), get<1>(signature), get<0>(publicKey), get<1>(publicKey))) {
+	if(!Ed25519::verify(get<0>(message), get<1>(message), get<0>(signature), get<1>(signature), get<0>(publicKey), get<1>(publicKey))) {
 	
 		// Return false as a bool
 		return cBoolToBool(environment, false);
