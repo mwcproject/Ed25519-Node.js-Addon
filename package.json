@@ -1,15 +1,15 @@
 {
 	"name": "@nicolasflamel/ed25519-native",
-	"version": "0.0.15",
+	"version": "0.0.16",
 	"description": "Node.js addon for parts of SUPERCOP's Ed25519 implementation",
-	"main": "./main.js",
+	"main": "./index.js",
 	"files": [
 		"*",
 		"!.gitignore"
 	],
 	"gypfile": true,
 	"scripts": {
-		"prepublishOnly": "wget \"https://bench.cr.yp.to/supercop/supercop-20220213.tar.xz\" && unxz < \"./supercop-20220213.tar.xz\" | tar -xf - && rm \"./supercop-20220213.tar.xz\" && sed -i 's/static const unsigned char zero\\[32\\];/static const unsigned char zero[32] = {0};/g' \"./supercop-20220213/crypto_sign/ed25519/ref10/fe_isnonzero.c\" && find \"./supercop-20220213/\" -mindepth 1 -maxdepth 1 ! -name \"crypto_sign\" -exec rm -rf {} + && find \"./supercop-20220213/crypto_sign/\" -mindepth 1 -maxdepth 1 ! -name \"ed25519\" -exec rm -rf {} + && find \"./supercop-20220213/crypto_sign/ed25519/\" -mindepth 1 -maxdepth 1 ! -name \"ref10\" -exec rm -rf {} + && wget \"https://github.com/NicolasFlamel1/Ed25519-WASM-Wrapper/archive/refs/heads/master.zip\" && unzip \"./master.zip\" && rm \"./master.zip\" && find \"./Ed25519-WASM-Wrapper-master/\" -mindepth 1 ! -name \"*.cpp\" ! -name \"*.c\" ! -name \"*.h\" -exec rm -rf {} +"
+		"prepublishOnly": "wget \"https://bench.cr.yp.to/supercop/supercop-20220213.tar.xz\" && unxz < \"./supercop-20220213.tar.xz\" | tar -xf - && rm \"./supercop-20220213.tar.xz\" && sed -i 's/static const unsigned char zero\\[32\\];/static const unsigned char zero[32] = {0};/g' \"./supercop-20220213/crypto_sign/ed25519/ref10/fe_isnonzero.c\" && find \"./supercop-20220213/\" -mindepth 1 -maxdepth 1 ! -name \"crypto_sign\" -exec rm -rf {} + && find \"./supercop-20220213/crypto_sign/\" -mindepth 1 -maxdepth 1 ! -name \"ed25519\" -exec rm -rf {} + && find \"./supercop-20220213/crypto_sign/ed25519/\" -mindepth 1 -maxdepth 1 ! -name \"ref10\" -exec rm -rf {} + && wget \"https://github.com/NicolasFlamel1/Ed25519-NPM-Package/archive/refs/heads/master.zip\" && unzip \"./master.zip\" && rm \"./master.zip\" && sed -i 's/explicit_bzero(\\(.*\\),/memset(\\1, 0,/g' \"./Ed25519-NPM-Package-master/main.cpp\" && find \"./Ed25519-NPM-Package-master/\" -mindepth 1 ! -name \"*.cpp\" ! -name \"*.c\" ! -name \"*.h\" -exec rm -rf {} +"
 	},
 	"repository": {
 		"type": "git",

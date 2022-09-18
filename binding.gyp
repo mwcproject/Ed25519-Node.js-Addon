@@ -3,9 +3,9 @@
 		{
 			"target_name": "Ed25519",
 			"sources": [
-				"./Ed25519-WASM-Wrapper-master/crypto_hash_sha512.c",
-				"./Ed25519-WASM-Wrapper-master/crypto_verify_32.c",
-				"./Ed25519-WASM-Wrapper-master/randombytes.c",
+				"./Ed25519-NPM-Package-master/crypto_hash_sha512.c",
+				"./Ed25519-NPM-Package-master/crypto_verify_32.c",
+				"./Ed25519-NPM-Package-master/randombytes.c",
 				"./main.cpp",
 				"./supercop-20220213/crypto_sign/ed25519/ref10/fe_0.c",
 				"./supercop-20220213/crypto_sign/ed25519/ref10/fe_1.c",
@@ -48,7 +48,7 @@
 				"./supercop-20220213/crypto_sign/ed25519/ref10/sign.c"
 			],
 			"include_dirs": [
-				"./Ed25519-WASM-Wrapper-master/",
+				"./Ed25519-NPM-Package-master/",
 				"./supercop-20220213/crypto_sign/ed25519/ref10/"
 			],
 			"defines": [
