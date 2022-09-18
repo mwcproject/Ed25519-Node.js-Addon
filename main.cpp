@@ -241,7 +241,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	if(!buffer) {
 	
 		// Clear data
-		memset(data, 0 size);
+		memset(data, 0, size);
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -252,7 +252,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	if(!sizeHint) {
 	
 		// Clear data
-		memset(data, 0 size);
+		memset(data, 0, size);
 	
 		// Free memory
 		delete [] buffer;
@@ -265,7 +265,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	memcpy(buffer, data, size);
 	
 	// Clear data
-	memset(data, 0 size);
+	memset(data, 0, size);
 	
 	// Check if creating array buffer from data failed
 	napi_value arrayBuffer;
@@ -278,7 +278,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 		const size_t *sizeHint = static_cast<size_t *>(finalizeHint);
 		
 		// Clear buffer
-		memset(buffer, 0 *sizeHint);
+		memset(buffer, 0, *sizeHint);
 		
 		// Free memory
 		delete [] buffer;
@@ -287,7 +287,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	}, sizeHint, &arrayBuffer) != napi_ok) {
 	
 		// Clear buffer
-		memset(buffer, 0 size);
+		memset(buffer, 0, size);
 	
 		// Free memory
 		delete [] buffer;
@@ -302,7 +302,7 @@ napi_value bufferToUint8Array(napi_env environment, uint8_t *data, size_t size) 
 	if(napi_create_typedarray(environment, napi_uint8_array, size, arrayBuffer, 0, &uint8Array) != napi_ok) {
 	
 		// Clear buffer
-		memset(buffer, 0 size);
+		memset(buffer, 0, size);
 	
 		// Free memory
 		delete [] buffer;
