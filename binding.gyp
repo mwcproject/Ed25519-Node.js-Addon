@@ -52,7 +52,7 @@
 				"./supercop-20220213/crypto_sign/ed25519/ref10/"
 			],
 			"defines": [
-				"CRYPTO_NAMESPACE(x)=x"
+				"CRYPTO_NAMESPACE="
 			]
 		}
 	]

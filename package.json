@@ -1,6 +1,6 @@
 {
 	"name": "@nicolasflamel/ed25519-native",
-	"version": "0.0.16",
+	"version": "0.0.17",
 	"description": "Node.js addon for parts of SUPERCOP's Ed25519 implementation",
 	"main": "./index.js",
 	"files": [

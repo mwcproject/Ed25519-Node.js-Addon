@@ -3,6 +3,10 @@
 #include <new>
 #include <node_api.h>
 #include <tuple>
+#include <vector>
+
+using namespace std;
+
 
 // Ed25519 namespace
 namespace Ed25519 {
@@ -10,8 +14,6 @@ namespace Ed25519 {
 	// Header files
 	#include "./Ed25519-NPM-Package-master/main.cpp"
 }
-
-using namespace std;
 
 
 // Constants
@@ -94,8 +96,8 @@ napi_value publicKeyFromSecretKey(napi_env environment, napi_callback_info argum
 
 	// Check if not enough arguments were provided
 	size_t argc = 1;
-	napi_value argv[argc];
-	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
+	vector<napi_value> argv(argc);
+	if(napi_get_cb_info(environment, arguments, &argc, argv.data(), nullptr, nullptr) != napi_ok || argc != argv.size()) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -110,15 +112,15 @@ napi_value publicKeyFromSecretKey(napi_env environment, napi_callback_info argum
 	}
 	
 	// Check if getting public key from secret key failed
-	uint8_t publicKey[Ed25519::publicKeySize()];
-	if(!Ed25519::publicKeyFromSecretKey(publicKey, get<0>(secretKey), get<1>(secretKey))) {
+	vector<uint8_t> publicKey(Ed25519::publicKeySize());
+	if(!Ed25519::publicKeyFromSecretKey(publicKey.data(), get<0>(secretKey), get<1>(secretKey))) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
 	}
 	
 	// Return public key as a uint8 array
-	return bufferToUint8Array(environment, publicKey, sizeof(publicKey));
+	return bufferToUint8Array(environment, publicKey.data(), publicKey.size());
 }
 
 // Sign
@@ -126,8 +128,8 @@ napi_value sign(napi_env environment, napi_callback_info arguments) {
 
 	// Check if not enough arguments were provided
 	size_t argc = 2;
-	napi_value argv[argc];
-	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
+	vector<napi_value> argv(argc);
+	if(napi_get_cb_info(environment, arguments, &argc, argv.data(), nullptr, nullptr) != napi_ok || argc != argv.size()) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
@@ -150,15 +152,15 @@ napi_value sign(napi_env environment, napi_callback_info arguments) {
 	}
 	
 	// Check if signing message failed
-	uint8_t signature[Ed25519::signatureSize()];
-	if(!Ed25519::sign(signature, get<0>(message), get<1>(message), get<0>(secretKey), get<1>(secretKey))) {
+	vector<uint8_t> signature(Ed25519::signatureSize());
+	if(!Ed25519::sign(signature.data(), get<0>(message), get<1>(message), get<0>(secretKey), get<1>(secretKey))) {
 	
 		// Return operation failed
 		return OPERATION_FAILED;
 	}
 	
 	// Return signature as a uint8 array
-	return bufferToUint8Array(environment, signature, sizeof(signature));
+	return bufferToUint8Array(environment, signature.data(), signature.size());
 }
 
 // Verify
@@ -166,8 +168,8 @@ napi_value verify(napi_env environment, napi_callback_info arguments) {
 
 	// Check if not enough arguments were provided
 	size_t argc = 3;
-	napi_value argv[argc];
-	if(napi_get_cb_info(environment, arguments, &argc, argv, nullptr, nullptr) != napi_ok || argc != sizeof(argv) / sizeof(argv[0])) {
+	vector<napi_value> argv(argc);
+	if(napi_get_cb_info(environment, arguments, &argc, argv.data(), nullptr, nullptr) != napi_ok || argc != argv.size()) {
 	
 		// Return false as a bool
 		return cBoolToBool(environment, false);
