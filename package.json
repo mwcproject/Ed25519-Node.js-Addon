@@ -1,5 +1,5 @@
 {
-	"name": "@nicolasflamel/ed25519-native",
+	"name": "@mwcproject/ed25519-native",
 	"version": "0.0.19",
 	"description": "Node.js addon for parts of SUPERCOP's Ed25519 implementation",
 	"main": "./index.js",
@@ -13,7 +13,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/NicolasFlamel1/Ed25519-Node.js-Addon.git"
+		"url": "git+https://github.com/mwcproject/Ed25519-Node.js-Addon.git"
 	},
 	"keywords": [
 		"Ed25519"
@@ -21,7 +21,7 @@
 	"author": "Nicolas Flamel",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/NicolasFlamel1/Ed25519-Node.js-Addon/issues"
+		"url": "https://github.com/mwcproject/Ed25519-Node.js-Addon/issues"
 	},
 	"dependencies": {
 		"bindings": "^1.5.0"
